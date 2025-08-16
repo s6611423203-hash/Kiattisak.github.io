@@ -3,120 +3,49 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HH.glb Viewer</title>
-
-  <!-- model-viewer จาก CDN -->
-  <script type="module"
-    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-
+  <title>HH.glb — 3D Viewer</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
-    :root{
-      --bg:#0b0f14;
-      --panel:#0f1620;
-      --text:#e6eef8;
-      --muted:#8fa0b3;
-      --accent:#1e90ff;
-      --ring: rgba(30,144,255,.35);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; background: radial-gradient(1200px 600px at 70% 20%, #111a24 0%, #0b0f14 60%);
-      color:var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans Thai", "Noto Sans", sans-serif;
-      display:flex; flex-direction:column; gap:12px;
-    }
-    header{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:10px 14px; background:linear-gradient(180deg, #0d151f, #0b1119); border-bottom:1px solid #131e2a;
-    }
-    header h1{font-size:16px; margin:0; color:#cfe3ff; font-weight:600; letter-spacing:.2px}
-    .controls{
-      display:flex; flex-wrap:wrap; gap:10px; align-items:center;
-    }
-    .control{
-      display:flex; align-items:center; gap:8px; background:var(--panel);
-      border:1px solid #152232; padding:8px 10px; border-radius:14px;
-      box-shadow: 0 0 0 0 var(--ring); transition: box-shadow .2s ease, border-color .2s ease;
-    }
-    .control:focus-within{border-color:var(--accent); box-shadow:0 0 0 6px var(--ring)}
-    .control label{font-size:12px; color:var(--muted)}
-    input[type="range"]{accent-color:var(--accent)}
-    button{
-      background:#142234; color:#d7e6ff; border:1px solid #1b2e45; padding:8px 12px;
-      border-radius:12px; cursor:pointer; font-weight:600;
-    }
-    button:hover{filter:brightness(1.1)}
-    button:active{transform:translateY(1px)}
-    .toggle{
-      display:inline-flex; align-items:center; gap:8px; cursor:pointer;
-      user-select:none; font-size:13px; color:#cfe3ff;
-    }
-    .toggle input{transform:scale(1.15)}
-    model-viewer{
-      width:100%; height:calc(100vh - 76px);
-      background:transparent;
-      --progress-bar-color: var(--accent);
-      --poster-color: #0b0f14;
-      --progress-mask: transparent;
-    }
-    footer{
-      position:fixed; right:10px; bottom:10px; font-size:12px; color:#6f839a; opacity:.75;
-    }
-    .hint{color:#7893b1}
+    :root{--bg:#0b0f14;--panel:#0f1620;--text:#e6eef8;--muted:#8fa0b3;--accent:#1e90ff;--ring:rgba(30,144,255,.35)}
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;background:radial-gradient(1200px 600px at 70% 20%,#111a24 0%,#0b0f14 60%);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans Thai","Noto Sans",sans-serif;display:flex;flex-direction:column;gap:12px}
+    header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:linear-gradient(180deg,#0d151f,#0b1119);border-bottom:1px solid #131e2a}
+    header h1{font-size:16px;margin:0;color:#cfe3ff;font-weight:600;letter-spacing:.2px}
+    .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .control{display:flex;align-items:center;gap:8px;background:#0f1620;border:1px solid #152232;padding:8px 10px;border-radius:14px}
+    model-viewer{width:100%;height:calc(100vh - 76px);background:transparent;--progress-bar-color:var(--accent);--poster-color:#0b0f14;--progress-mask:transparent}
+    footer{position:fixed;right:10px;bottom:10px;font-size:12px;color:#6f839a;opacity:.75}
   </style>
 </head>
 <body>
   <header>
     <h1>HH.glb — 3D Viewer</h1>
     <div class="controls">
-      <label class="toggle">
-        <input id="autoRotateChk" type="checkbox" checked />
-        หมุนอัตโนมัติ
-      </label>
-
-      <div class="control">
-        <label for="exposure">ความสว่าง</label>
-        <input id="exposure" type="range" min="0.1" max="2.2" step="0.05" value="1.0" />
-      </div>
-
-      <div class="control">
-        <label for="shadows">เงา</label>
-        <input id="shadows" type="range" min="0" max="2" step="0.05" value="0.6" />
-      </div>
-
-      <div class="control">
-        <label for="fov">มุมมอง (FOV)</label>
-        <input id="fov" type="range" min="20" max="90" step="1" value="45" />
-      </div>
-
+      <label><input id="autoRotateChk" type="checkbox" checked /> หมุนอัตโนมัติ</label>
+      <div class="control"><label for="exposure">ความสว่าง</label> <input id="exposure" type="range" min="0.1" max="2.2" step="0.05" value="1.0" /></div>
+      <div class="control"><label for="shadows">เงา</label> <input id="shadows" type="range" min="0" max="2" step="0.05" value="0.6" /></div>
+      <div class="control"><label for="fov">มุมมอง (FOV)</label> <input id="fov" type="range" min="20" max="90" step="1" value="45" /></div>
       <button id="resetCam">รีเซ็ตมุมกล้อง</button>
     </div>
   </header>
 
-  <!-- วาง HH.glb ไว้โฟลเดอร์เดียวกับไฟล์นี้ -->
+  <!-- ใช้พาธจากรากโดเมนของเพจ -->
   <model-viewer id="viewer"
     src="/Kiattisak.github.io/HH.glb"
-    camera-controls
-    interaction-prompt="none"
-    autoplay
-    auto-rotate
+    camera-controls auto-rotate
     rotation-per-second="20deg"
     shadow-intensity="0.6"
     exposure="1"
-    environment-intensity="1"
     tone-mapping="aces"
     camera-orbit="0deg 70deg 2.2m"
     field-of-view="45deg"
     min-field-of-view="20deg"
     max-field-of-view="90deg"
-    ar
-    ar-modes="webxr scene-viewer quick-look"
+    ar ar-modes="webxr scene-viewer quick-look"
     style="outline:none">
   </model-viewer>
 
-  <footer>
-    คลิกแล้วลาก = หมุน | สกอลล์ = ซูม | คลิกขวา/สองนิ้ว = แพน
-  </footer>
+  <footer>คลิกแล้วลาก = หมุน | สกอลล์ = ซูม | คลิกขวา/สองนิ้ว = แพน</footer>
 
   <script>
     const mv = document.getElementById('viewer');
@@ -126,38 +55,20 @@
     const fov      = document.getElementById('fov');
     const resetBtn = document.getElementById('resetCam');
 
-    // ใช้ HDR สไตล์มืด (โหลดผ่าน CDN) — เอาออกได้ถ้าไม่ต้องการ
-    mv.environmentImage = 'https://modelviewer.dev/shared-assets/environments/night.hdr';
-
-    // toggle หมุนอัตโนมัติ
-    autoChk.addEventListener('change', e => {
-      mv.autoRotate = e.target.checked;
-    });
-
-    // ปรับความสว่าง/เงา/มุมมอง
+    autoChk.addEventListener('change', e => mv.autoRotate = e.target.checked);
     exposure.addEventListener('input', e => mv.exposure = Number(e.target.value));
     shadows.addEventListener('input',  e => mv.shadowIntensity = Number(e.target.value));
     fov.addEventListener('input',      e => mv.fieldOfView = `${e.target.value}deg`);
 
-    // รีเซ็ตมุมกล้อง
-    const DEFAULT_ORBIT = '0deg 70deg 2.2m';
-    const DEFAULT_FOV   = '45deg';
+    const DEFAULT_ORBIT='0deg 70deg 2.2m', DEFAULT_FOV='45deg';
     resetBtn.addEventListener('click', () => {
-      mv.cameraOrbit = DEFAULT_ORBIT;
-      mv.fieldOfView = DEFAULT_FOV;
-      // รีเซ็ตเป้ากล้องกลับไปหา model center
-      mv.cameraTarget = 'auto';
-      // ทำให้หมุนอัตโนมัติเริ่มใหม่ถ้าเปิดอยู่
-      if (autoChk.checked) {
-        mv.autoRotate = false;
-        requestAnimationFrame(()=> mv.autoRotate = true);
-      }
+      mv.cameraOrbit = DEFAULT_ORBIT; mv.fieldOfView = DEFAULT_FOV; mv.cameraTarget = 'auto';
+      if (autoChk.checked) { mv.autoRotate = false; requestAnimationFrame(()=> mv.autoRotate = true); }
     });
 
-    // กันเหตุไฟล์ไม่พบ
     mv.addEventListener('error', (e) => {
-      console.error('เกิดข้อผิดพลาดในการโหลดโมเดล:', e?.detail || e);
-      alert('โหลด HH.glb ไม่ได้ — ตรวจว่าไฟล์อยู่โฟลเดอร์เดียวกับ index.html และชื่อถูกต้อง');
+      console.error('Model-Viewer error:', e?.detail || e);
+      alert('โหลด HH.glb ไม่ได้ — เช็คพาธ /Kiattisak.github.io/HH.glb, ชื่อไฟล์ (ตัวพิมพ์), และไฟล์ .nojekyll');
     });
   </script>
 </body>
